@@ -357,14 +357,14 @@ Utilizam SQLite em memória, criando e destruindo as tabelas a cada teste via `s
 - **Polimorfismo bem aplicado**: `ProductInterface` permite múltiplas implementações sem impactar o restante do sistema
 - **Event Dispatcher genérico**: funciona para qualquer evento, bastando registrar o handler correto
 
-### Possíveis Melhorias
+### Melhorias Implementadas
 
-- **`OrderRepository`** está incompleto: apenas o método `create` foi implementado; `update`, `find` e `findAll` estão ausentes
-- **`strictNullChecks`** está desativado no `tsconfig.json` — reativá-lo eliminaria uma classe inteira de bugs em runtime
-- **`tslint`** está depreciado desde 2019; a migração para **ESLint + @typescript-eslint** é recomendada
-- **Eventos de domínio para Customer**: o agregado Customer não dispara eventos (ex: `CustomerActivatedEvent`), o que seria natural para o sistema de reward points
-- **Tipagem do `eventData`**: está tipado como `any` em `EventInterface` — poderia ser genérico (`EventInterface<T>`) para maior type safety
-- **CustomerModel** não mapeia `active` corretamente no `find`: o status `active` não é restaurado ao reconstruir a entidade no método `find` do `CustomerRepository`
+- **`strictNullChecks` ativado**: removida a linha `"strictNullChecks": false` do `tsconfig.json`; 11 erros de tipo corrigidos (principalmente `findOne()` sem null-check nos repositórios e specs)
+- **Migração TSLint → ESLint**: `tslint` removido; instalado `eslint` + `@typescript-eslint`; criado `eslint.config.js` (flat config); scripts `lint` e `lint:fix` adicionados ao `package.json`; 17 erros de lint corrigidos no código (incluindo `any` → `unknown`, variáveis não usadas, catch sem binding)
+- **Eventos de domínio para Customer**: implementados `CustomerCreatedEvent` e `CustomerActivatedEvent` com três handlers (`EnviaConsoleLog1`, `EnviaConsoleLog2` para criação; `EnviaConsoleLog` para ativação) e spec cobrindo registro, notificação e isolamento entre eventos
+- **`EventInterface<T>` genérico**: `eventData` passou de `unknown` para `T` com default `unknown`; cada evento declara seu payload concreto (ex: `CustomerActivatedEvent implements EventInterface<{ id: string }>`), eliminando casts nos handlers
+- **Bug `CustomerRepository.find()`**: `active` e `rewardPoints` não eram restaurados ao reconstruir a entidade — corrigido alinhando `find()` com a lógica já correta de `findAll()`; novo teste adicionado para cobrir o cenário de customer ativo com pontos de recompensa
+- **`OrderRepository` completo**: `update`, `find` e `findAll` já implementados com testes de integração cobrindo todos os métodos
 
 ---
 

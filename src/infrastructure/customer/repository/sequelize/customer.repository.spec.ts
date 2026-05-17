@@ -32,7 +32,7 @@ describe("Customer repository test", () => {
 
     const customerModel = await CustomerModel.findOne({ where: { id: "123" } });
 
-    expect(customerModel.toJSON()).toStrictEqual({
+    expect(customerModel!.toJSON()).toStrictEqual({
       id: "123",
       name: customer.name,
       active: customer.isActive(),
@@ -55,7 +55,7 @@ describe("Customer repository test", () => {
     await customerRepository.update(customer);
     const customerModel = await CustomerModel.findOne({ where: { id: "123" } });
 
-    expect(customerModel.toJSON()).toStrictEqual({
+    expect(customerModel!.toJSON()).toStrictEqual({
       id: "123",
       name: customer.name,
       active: customer.isActive(),
@@ -76,6 +76,22 @@ describe("Customer repository test", () => {
 
     const customerResult = await customerRepository.find(customer.id);
 
+    expect(customer).toStrictEqual(customerResult);
+  });
+
+  it("should find a customer restoring active status and reward points", async () => {
+    const customerRepository = new CustomerRepository();
+    const customer = new Customer("123", "Customer 1");
+    const address = new Address("Street 1", 1, "Zipcode 1", "City 1");
+    customer.Address = address;
+    customer.addRewardPoints(50);
+    customer.activate();
+    await customerRepository.create(customer);
+
+    const customerResult = await customerRepository.find(customer.id);
+
+    expect(customerResult.isActive()).toBe(true);
+    expect(customerResult.rewardPoints).toBe(50);
     expect(customer).toStrictEqual(customerResult);
   });
 

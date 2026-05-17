@@ -29,7 +29,7 @@ describe("Product repository test", () => {
 
     const productModel = await ProductModel.findOne({ where: { id: "1" } });
 
-    expect(productModel.toJSON()).toStrictEqual({
+    expect(productModel!.toJSON()).toStrictEqual({
       id: "1",
       name: "Product 1",
       price: 100,
@@ -43,7 +43,7 @@ describe("Product repository test", () => {
 
     const productModel = await ProductModel.findOne({ where: { id: "1" } });
 
-    expect(productModel.toJSON()).toStrictEqual({
+    expect(productModel!.toJSON()).toStrictEqual({
       id: "1",
       name: "Product 1",
       price: 100,
@@ -55,7 +55,7 @@ describe("Product repository test", () => {
 
     const productModel2 = await ProductModel.findOne({ where: { id: "1" } });
 
-    expect(productModel2.toJSON()).toStrictEqual({
+    expect(productModel2!.toJSON()).toStrictEqual({
       id: "1",
       name: "Product 2",
       price: 200,
@@ -70,7 +70,7 @@ describe("Product repository test", () => {
     const productModel = await ProductModel.findOne({ where: { id: "1" } });
     const foundProduct = await productRepository.find("1");
 
-    expect(productModel.toJSON()).toStrictEqual({
+    expect(productModel!.toJSON()).toStrictEqual({
       id: foundProduct.id,
       name: foundProduct.name,
       price: foundProduct.price,

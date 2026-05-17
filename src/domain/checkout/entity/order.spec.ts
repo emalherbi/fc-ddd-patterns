@@ -4,19 +4,19 @@ import OrderItem from "./order_item";
 describe("Order unit tests", () => {
   it("should throw error when id is empty", () => {
     expect(() => {
-      let order = new Order("", "123", []);
+      new Order("", "123", []);
     }).toThrow("Id is required");
   });
 
   it("should throw error when customerId is empty", () => {
     expect(() => {
-      let order = new Order("123", "", []);
+      new Order("123", "", []);
     }).toThrow("CustomerId is required");
   });
 
   it("should throw error when items is empty", () => {
     expect(() => {
-      let order = new Order("123", "123", []);
+      new Order("123", "123", []);
     }).toThrow("Items are required");
   });
 
@@ -37,7 +37,7 @@ describe("Order unit tests", () => {
   it("should throw error if the item qte is less or equal zero 0", () => {
     expect(() => {
       const item = new OrderItem("i1", "Item 1", 100, "p1", 0);
-      const order = new Order("o1", "c1", [item]);
+      new Order("o1", "c1", [item]);
     }).toThrow("Quantity must be greater than 0");
   });
 });
