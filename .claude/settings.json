@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(node -e \"const j = require\\('./node_modules/@types/jest/package.json'\\); console.log\\('types/jest:', j.version\\)\")",
-      "Bash(npm install *)"
-    ]
-  }
-}
